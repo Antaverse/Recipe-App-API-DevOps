@@ -1,0 +1,29 @@
+name: cicd
+
+on:
+  push:
+    branches:
+      - 'development'
+      - 'master'
+      - 'main'
+      - 'releases/**'
+  pull_request:
+    branches:
+      - 'development'
+      - 'master'
+      - 'main'
+      - 'releases/**'
+
+jobs:
+  test_and_lint:
+    name: Unit Testing and Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Docker Compose Run
+        run: |
+          docker-compose run --rm app sh -c "python manage.py wait_for_db && coverage run manage.py test && coverage report && flake8"
+        
+          
