@@ -24,6 +24,6 @@ jobs:
 
       - name: Docker Compose Run
         run: |
-          docker-compose run --rm app sh -c "python manage.py wait_for_db && ls -lart && cat /etc/os-release && cat /etc/passwd && cat /etc/group"
+          docker-compose run --rm app sh -c "python manage.py wait_for_db && ls -lart /"
         
           
