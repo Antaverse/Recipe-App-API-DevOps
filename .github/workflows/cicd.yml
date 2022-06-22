@@ -17,13 +17,14 @@ on:
 jobs:
   test_and_lint:
     name: Unit Testing and Linting
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
       - name: Docker Compose Run
         run: |
+          apk add --update docker-compose
           docker-compose run --rm app sh -c "python manage.py wait_for_db && ls -lart"
         
           
