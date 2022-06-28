@@ -25,5 +25,29 @@ jobs:
       - name: Docker Compose Run
         run: |
           docker-compose run --rm app sh -c "python manage.py wait_for_db && coverage run manage.py test && coverage report && flake8 && ls -lart"
-        
-          
+
+      - name: Terraform Validate
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.12.13
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: 'deploy'
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Image
+        run: |
+          echo "Build and Push Image"
+
+      - name: Terraform Init
+        run: |
+          echo "Terraform Init"
+
+      - name: Terraform Plan
+        run: |
+          echo "Terraform Plan"
+
+      - name: Terraform Apply
+        run: |
+          echo "Terraform Apply"
