@@ -34,10 +34,10 @@ jobs:
           ls -lart
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform -chdir=deploy init
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_ACTION_WORKING_DIR: './deploy/'
+          TF_ACTION_WORKING_DIR: '.'
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
