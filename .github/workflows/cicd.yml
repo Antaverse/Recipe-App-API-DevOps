@@ -54,7 +54,6 @@ jobs:
     steps:
       - name: Build and Push Docker Image
         run: |
-          apt install python3
           python --version
           pip3 install awscli
           env
