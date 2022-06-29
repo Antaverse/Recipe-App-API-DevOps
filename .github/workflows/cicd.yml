@@ -57,3 +57,5 @@ jobs:
           python --version
           pip3 install awscli
           env
+          git_hash=$(git rev-parse --short "$GITHUB_SHA")
+          docker build --compress -t $ECR_REPO:$git_hash
