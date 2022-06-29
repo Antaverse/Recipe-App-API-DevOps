@@ -34,7 +34,10 @@ jobs:
           ls -lart
 
       - name: Terraform Init
-        run: terraform -chdir=deploy init -backend=false
+        run: |
+          cd deploy/
+          terraform init -backend=false
+          terraform validate -no-color
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_ACTION_WORKING_DIR: '.'
@@ -42,7 +45,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
-        run: terraform -chdir=deploy validate -no-color
+        run: echo "terraform -chdir=deploy validate -no-color"
 
       - name: Build and Push Image
         run: |
