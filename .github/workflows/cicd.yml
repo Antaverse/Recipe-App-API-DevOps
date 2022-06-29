@@ -46,7 +46,7 @@ jobs:
 
       - name: Build and Push Image
         run: |
-          echo "Build and Push Image"
+          echo "Build and Push Image "
 
       - name: Terraform Init
         run: |
