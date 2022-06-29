@@ -52,6 +52,9 @@ jobs:
     name: Build Docker Image and Push to Registry
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        
       - name: Build and Push Docker Image
         run: |
           python --version
