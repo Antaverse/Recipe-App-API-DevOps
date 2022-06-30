@@ -54,11 +54,12 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-        
+
       - name: Build and Push Docker Image
         run: |
           python --version
           pip3 install awscli
           env
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
+          echo $git_hash
           docker build --compress -t $ECR_REPO:$git_hash
