@@ -49,6 +49,7 @@ jobs:
   build_and_push_image:
     name: Build Docker Image and Push to Registry
     runs-on: ubuntu-latest
+    if : '$GITHUB_REF_NAME =~ /^(main|master|production)$/'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -69,4 +70,27 @@ jobs:
           docker push $ECR_REPO:latest
         env:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
+          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  setup_staging_infra:
+    name: Setup Staging Environment in AWS using Terraform
+    runs-on: ubuntu-latest
+    if : github.ref_name == 'master' || github.ref_name == 'main' || github.ref_name == 'production'
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Validate
+        run: |
+          cd deploy/
+          git_hash=$(git rev-parse --short "$GITHUB_SHA")
+          export TF_VAR_ecr_image_api=$ECR_REPO:$git_hash
+          terraform init
+          terraform workspace select staging || terraform workspace new staging
+          terraform plan
+        env:
+          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
