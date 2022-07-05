@@ -62,8 +62,13 @@ jobs:
           env
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
           echo $git_hash
+          echo ${{github.ref}}
+          echo ${{github.ref.name}}
           docker build . --compress -t $ECR_REPO:$git_hash
           $(aws ecr get-login --no-include-email --region us-east-1)
           docker push $ECR_REPO:$git_hash
           docker tag $ECR_REPO:$git_hash $ECR_REPO:latest
           docker push $ECR_REPO:latest
+        env:
+          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}          
