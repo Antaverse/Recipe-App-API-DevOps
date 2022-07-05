@@ -90,8 +90,7 @@ jobs:
           export TF_VAR_ecr_image_api=$ECR_REPO:$git_hash
           terraform init
           terraform workspace select staging || terraform workspace new staging
-          terraform plan
-
+          terraform validate
         env:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
